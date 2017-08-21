@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# coding=utf-8
 #!flask/bin/python
 from app import app
 from geventwebsocket.handler import WebSocketHandler
