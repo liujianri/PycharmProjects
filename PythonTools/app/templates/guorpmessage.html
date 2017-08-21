@@ -1,16 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta http-equiv="Content-Language" content="zh-CN"/>
-        <title>群发消息</title>
-        <link rel="shortcut icon" href="../static/img/bitbug_favicon.ico" />
-        <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css">
+        <meta charset="utf-8">
+		<link rel="shortcut icon" href="../static/img/bitbug_favicon.ico" />
+        <<link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+        <title>群消息发送</title>
         <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
 
-            $('form').submit(function(event){
+             $('#sent').click(function(event){
 
                 all_val = [];
                 all_val.push("guorpmessage");
@@ -37,6 +39,7 @@
                 $("#sent").hide();
                 return false;
             });
+
             $('#reset1').click(function(event){
                 stop = [];
                 stop.push("guorpmessage");
@@ -71,56 +74,54 @@
         </script>
     </head>
     <body>
-        <div class="header container">
-            <br>
-            <h1>群消息发送</h1>
-            <br>
-            <ul class="tabs">
+	<div class="main">
+		<div class="header" >
+			<h1>群消息发送</h1>
+		</div>
+		<p>默认会在填入的群中发送文字消息、语音消息、改错消息、图片消息四种消息类型！ </p>
+			<form>
+				<ul class="left-form">
+					<h2>发送消息:</h2>
+					 <li>
+						 <input type="text"  id="jid" placeholder="发消息的帐号JID" required/>
+						 <a href="#" class="icon ticker"> </a>
+						 <div class="clear"> </div>
+					 </li>
+					<li>
+						<input type="text"  id="numbers"  placeholder="发送条数" required/>
+						<a href="#" class="icon ticker"> </a>
+						<div class="clear"> </div>
+					</li>
+					<li>
+						<input type="text"  id="group_id" placeholder="群ID" required/>
+						<a href="#" class="icon ticker"> </a>
+						<div class="clear"> </div>
+					</li>
+					<li>
+						<input type="text" id ="group_name"  placeholder="群名称" required/>
+						<a href="#" class="icon ticker"> </a>
+						<div class="clear"> </div>
+					</li>
+					<label class="checkbox">正式服务器：<input type="radio" value="formal" name="radiobutton" checked="" id="f"><i>
+                        </i></label>
+                        <label class="checkbox">测试服务器：<input type="radio" value="test" name="radiobutton" checked="true" id="t"><i> </i>
+                        </label>
+                        <div class="clear"> </div>
+					<input type="submit" onClick="return false" id="sent" value="发送消息">
+                    <input type="submit" onClick="return false" id="reset1" value="停止发送">
+						<div class="clear"> </div>
 
-            </ul>
-        </div>
-        <div class="container" >
+				</ul>
+				<ul class="right-form">
+					<h3>发送进度:</h3>
+					<div>
+                    <h5 id = p1></h5>
+					</div>
+					<div class="clear"> </div>
+				</ul>
+				<div class="clear"> </div>
+			</form>
+		</div>
 
-            <form class="row" id="message_form">
-                <div class="span10">
-                    <div class="=e">
-                        <div>
-                            <font  color="red"> 请自己填写下列信息，不要使用默认值!</font>
-                            <br/><br/>
-                            <span style="display:inline-block;width:120px;">正式服务器:</span>
-                                <input  type="radio" name="radiobutton" value="formal" id="f" /> <br/><br/>
-                            <span style="display:inline-block;width:120px;">测试服务器:</span>
-                            <input checked="true" type="radio" name="radiobutton" value="test" id="t"/> <br/><br/>
-                        </div>
-                        <div style="text-align:left;">
-                            <span style="display:inline-block;width:120px;">发消息的帐号JID：</span>
-                            <input type="text" id="jid" value="3249443" style="height:15px;width:120px">
-                            <font size="0.5" face="arial" color="red"> 发送帐号必须在下列的群组中</font>
-                            <br/><br/>
-                            <span style="display:inline-block;width:120px;">发送条数：</span>
-                            <input type="text" id="numbers" value="10" style="height:15px;width:120px"><br/><br/>
-                        </div>
-                        <div id="tests">
-                            <span style="display:inline-block;width:120px;">群ID：</span>
-                            <input type="text" id="group_id" value="16909" style="height:15px;width:120px"><br/><br/>
-                            <span style="display:inline-block;width:120px;">群名称：</span>
-                            <input type="text" id="group_name" value="500测试大群" style="height:15px;width:120px">
-
-                        </div>
-                    </div>
-                    <div>
-                        <br>
-                        <input type="submit" class="btn primary" id="sent" value="开始发送" style="width:120px;">
-
-                        <input type="reset" class="btn" id="reset1" value="停止" style="width:120px;">
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="footer container">
-
-            <h3 id="p1"></h3>
-        </div>
-
-    </body>
+</body>
 </html>
