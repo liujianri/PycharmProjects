@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Language" content="zh-CN"/>
+        <title>群发消息</title>
+        <link rel="shortcut icon" href="../static/img/bitbug_favicon.ico" />
+        <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css">
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+
+            $('form').submit(function(event){
+
+                all_val = [];
+                all_val.push("guorpmessage");
+                all_val.push("start");
+                ob = document.getElementsByName("radiobutton");
+                jid = document.getElementById("jid").value;
+                num = document.getElementById("numbers").value;
+                group_id = document.getElementById("group_id").value;
+                group_name = document.getElementById("group_name").value;
+
+                for(r in ob){
+                    if(ob[r].checked)
+                    all_val.push(ob[r].value);
+                }
+                console.log("qwe");
+                all_val.push(jid);
+                all_val.push(num);
+                all_val.push(group_id);
+                all_val.push(group_name);
+
+                console.log("qwt");
+                alert(all_val);
+                ws.send(all_val);
+                $("#sent").hide();
+                return false;
+            });
+            $('#reset1').click(function(event){
+                stop = [];
+                stop.push("guorpmessage");
+                stop.push("stop");
+                ws.send(stop)
+                $("#sent").show();
+                return false;
+            });
+            if ("WebSocket" in window) {
+                ws = new WebSocket("ws://" + document.domain + ":5002/longLive/");
+                ws.onmessage = function (msg) {
+                    document.getElementById("p1").innerHTML=msg.data;
+                    console.log(msg.data);
+                };
+                ws.onerror=function(msg){
+                    console.log(msg);
+                }
+            } else {
+                alert("WebSocket not supported");
+            }
+            window.onbeforeunload = function() {
+                stops = [];
+                stops.push("guorpmessage");
+                stops.push("stop");
+                ws.send(stops)
+                ws.onclose = function () {
+                    console.log('unlodad')
+                };
+                ws.close()
+            };
+        });
+        </script>
+    </head>
+    <body>
+        <div class="header container">
+            <br>
+            <h1>群消息发送</h1>
+            <br>
+            <ul class="tabs">
+
+            </ul>
+        </div>
+        <div class="container" >
+
+            <form class="row" id="message_form">
+                <div class="span10">
+                    <div class="=e">
+                        <div>
+                            <font  color="red"> 请自己填写下列信息，不要使用默认值!</font>
+                            <br/><br/>
+                            <span style="display:inline-block;width:120px;">正式服务器:</span>
+                                <input  type="radio" name="radiobutton" value="formal" id="f" /> <br/><br/>
+                            <span style="display:inline-block;width:120px;">测试服务器:</span>
+                            <input checked="true" type="radio" name="radiobutton" value="test" id="t"/> <br/><br/>
+                        </div>
+                        <div style="text-align:left;">
+                            <span style="display:inline-block;width:120px;">发消息的帐号JID：</span>
+                            <input type="text" id="jid" value="3249443" style="height:15px;width:120px">
+                            <font size="0.5" face="arial" color="red"> 发送帐号必须在下列的群组中</font>
+                            <br/><br/>
+                            <span style="display:inline-block;width:120px;">发送条数：</span>
+                            <input type="text" id="numbers" value="10" style="height:15px;width:120px"><br/><br/>
+                        </div>
+                        <div id="tests">
+                            <span style="display:inline-block;width:120px;">群ID：</span>
+                            <input type="text" id="group_id" value="16909" style="height:15px;width:120px"><br/><br/>
+                            <span style="display:inline-block;width:120px;">群名称：</span>
+                            <input type="text" id="group_name" value="500测试大群" style="height:15px;width:120px">
+
+                        </div>
+                    </div>
+                    <div>
+                        <br>
+                        <input type="submit" class="btn primary" id="sent" value="开始发送" style="width:120px;">
+
+                        <input type="reset" class="btn" id="reset1" value="停止" style="width:120px;">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="footer container">
+
+            <h3 id="p1"></h3>
+        </div>
+
+    </body>
+</html>

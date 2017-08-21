@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8">
+		<link rel="shortcut icon" href="../static/img/bitbug_favicon.ico" />
+        <<link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+        <title>收发消息</title>
+        <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+
+
+            $('#sends').click(function(event){
+
+            	all_val = [];
+            	appid=document.getElementById("appid").value;
+            	secret=document.getElementById("secret").value;
+            	Userid=document.getElementById("Userid").value;
+            	context_m=document.getElementById("context").value;
+            	ob = document.getElementsByName("radiobutton");
+            	all_val.push(appid);
+            	all_val.push(secret);
+			 	all_val.push(Userid);
+            	all_val.push(context_m);
+				 for(r in ob){
+                    if(ob[r].checked)
+                    all_val.push(ob[r].value);
+                }
+            	$.ajax({
+            		url:'/sendmessage'//改为你的动态页
+            		,type:'POST'
+            		,data:JSON.stringify(all_val)
+            		,success: alert("发送成功！")
+               	});
+
+                return false;
+            });
+
+            if ("WebSocket" in window) {
+                ws = new WebSocket("ws://" + document.domain + ":5002/longLive/");
+
+                ws.onopen = function()
+               {
+                  	wc_val = [];
+                  	wc_val.push("request_message");
+					wc_val.push("start");
+                  	ws.send(wc_val);
+
+               };
+                ws.onmessage = function (msg) {
+                    document.getElementById("p1").innerHTML=msg.data;
+                    console.log(msg.data);
+                };
+                ws.onerror=function(msg){
+                    console.log(msg);
+                }
+
+            } else {
+                alert("WebSocket not supported");
+            }
+            window.onbeforeunload = function() {
+            	stop_val = [];
+                stop_val.push("request_message");
+                stop_val.push("stop");
+                ws.send(stop_val)
+                ws.onclose = function () {
+                    console.log('unlodad')
+                };
+                ws.close()
+            };
+        });
+        </script>
+    </head>
+    <body>
+	<div class="main">
+		<div class="header" >
+			<h1>公众帐号收发消息!</h1>
+		</div>
+		<p>填入内容后点击发送会发一条消息给输入的 Userid </p>
+			<form>
+				<ul class="left-form">
+					<h2>发送消息:</h2>
+					 <li>
+						 <input type="text" value="test" id="appid" placeholder="appid" required/>
+						 <a href="#" class="icon ticker"> </a>
+						 <div class="clear"> </div>
+					 </li>
+					<li>
+						<input type="text"  id="secret" value="32471293084712039834" placeholder="secret" required/>
+						<a href="#" class="icon ticker"> </a>
+						<div class="clear"> </div>
+					</li>
+					<li>
+						<input type="text"  id="Userid" placeholder="Userid" required/>
+						<a href="#" class="icon ticker"> </a>
+						<div class="clear"> </div>
+					</li>
+					<li>
+						<input type="text" id ="context"  placeholder="消息内容" required/>
+						<a href="#" class="icon ticker"> </a>
+						<div class="clear"> </div>
+					</li>
+					<label class="checkbox">正式服务器：<input type="radio" value="formal" name="radiobutton" checked=""><i>
+                        </i></label>
+                        <label class="checkbox">测试服务器：<input type="radio" value="test" name="radiobutton" checked="true"><i> </i>
+                        </label>
+                        <div class="clear"> </div>
+					<input type="submit" onClick="return false" id="sends" value="发送消息">
+						<div class="clear"> </div>
+				</ul>
+				<ul class="right-form">
+					<h3>接收的消息:</h3>
+					<div>
+                    <h5 id = p1></h5>
+					</div>
+					<div class="clear"> </div>
+				</ul>
+				<div class="clear"> </div>
+			</form>
+		</div>
+
+</body>
+</html>

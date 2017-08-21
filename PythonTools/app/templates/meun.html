@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="utf-8">
+		<link rel="shortcut icon" href="../static/img/bitbug_favicon.ico" />
+		<link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	    <title >公众帐号设置</title>
+        <script type="text/javascript" charset="utf-8">
+
+        </script>
+</head>
+<body>
+	<div class="main">
+		<div class="header" >
+			<h1>公众帐号设置!</h1>
+		</div>
+		<p>提交设置内容后，会发一条消息给输入的 userid </p>
+			<form  method="post" action="">
+				<ul class="left-form">
+					<h2></h2>
+					<li>
+						<input type="text"  value="test" name="appid" placeholder="appid" required/>
+						<div class="clear"> </div>
+					</li>
+                    <li>
+						<input type="text" value="32471293084712039834" name="secret" placeholder="密钥" required/>
+						<div class="clear"> </div>
+					</li>
+					<li>
+						<input type="text"  name="menu1" placeholder="一级菜单名称" required/>
+						<div class="clear"> </div>
+					</li>
+					<li>
+						<input type="text"  name="menu_Click" placeholder="一级菜单点击事件" required/>
+						<div class="clear"> </div>
+					</li>
+					<li>
+						<input type="text"  name="menu2" placeholder="二级菜单名称" required/>
+						<div class="clear"> </div>
+					</li>
+				</ul>
+				<ul class="right-form">
+					<h3>  </h3>
+                    <li>
+						<input type="text"  name="menu_url" placeholder="二级菜单点击跳转url" required/>
+						<div class="clear"> </div>
+					</li>
+                    <li>
+						<input type="text" name="menu3"  placeholder="三级级菜单名称" required/>
+						<div class="clear"> </div>
+					</li>
+                    <li>
+						<input type="text"  name="menu3_Click" placeholder="三级级菜单点击事件" required/>
+						<div class="clear"> </div>
+					</li>
+					<div>
+						<li><input type="text"  name="UserId" placeholder="接收消息的UserId" required/></li>
+						<li> <input type="text"  name="context" placeholder="消息内容" required/></li>
+                        <label class="checkbox">正式服务器：<input type="radio" value="formal" name="radiobutton" checked=""><i>
+                        </i></label>
+                        <label class="checkbox">测试服务器：<input type="radio" value="test" name="radiobutton" checked="true"><i> </i>
+                        </label>
+                        <div class="clear"> </div>
+						<input type="submit" onClick="myFunction();return false" name="set" value="设置" >
+						{{ form.csrf_token }}
+					</div>
+
+				</ul>
+				<div class="clear"> </div>
+			</form>
+		</div>
+
+</body>
+</html>

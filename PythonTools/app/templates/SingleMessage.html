@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8">
+		<link rel="shortcut icon" href="../static/img/bitbug_favicon.ico" />
+        <<link href="../static/css/style.css" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+        <title>单人发送消息</title>
+        <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+
+            $('#sends').click(function(event){
+
+            	all_val = [];
+            	Userid=document.getElementById("Userid").value;
+            	cont=document.getElementById("cont").value;
+
+            	all_val.push("single_message");
+            	all_val.push("start");
+			 	all_val.push(Userid);
+			 	all_val.push(cont);
+				ws.send(all_val)
+				$("#sends").hide();
+                return false;
+            });
+            $('#stop').click(function(event){
+
+            	stops_val = [];
+                stops_val.push("single_message");
+                stops_val.push("stop");
+                ws.send(stops_val)
+                $("#sends").show();
+                return false;
+            });
+
+            if ("WebSocket" in window) {
+                ws = new WebSocket("ws://" + document.domain + ":5002/longLive/");
+
+                ws.onmessage = function (msg) {
+                    document.getElementById("p1").innerHTML=msg.data;
+                    console.log(msg.data);
+                };
+                ws.onerror=function(msg){
+                    console.log(msg);
+                }
+
+            } else {
+                alert("WebSocket not supported");
+            }
+            window.onbeforeunload = function() {
+            	stop_val = [];
+                stop_val.push("single_message");
+                stop_val.push("stop");
+                ws.send(stop_val)
+                ws.onclose = function () {
+                    console.log('unlodad')
+                };
+                ws.close()
+            };
+        });
+        </script>
+    </head>
+    <body>
+	<div class="main">
+		<div class="header" >
+			<h1>单人发送消息!</h1>
+		</div>
+		<p>填入的Userid 会收到50个帐号发来的消息，只支持测试服务器。 </p>
+			<form>
+				<ul class="left-form">
+					<h2></h2>
+					 <li>
+						 <input type="text"  id="Userid" placeholder="Userid" required/>
+						 <a href="#" class="icon ticker"> </a>
+						 <div class="clear"> </div>
+					 </li>
+					<li>
+						<input type="text"  id="cont"  placeholder="发送条数" required/>
+						<a href="#" class="icon ticker"> </a>
+						<div class="clear"> </div>
+					</li>
+                        <div class="clear"> </div>
+					<input type="submit" onClick="return false" id="sends" value="发送消息">
+
+					<input type="submit" onClick="return false" id="stop" value="停止发送">
+						<div class="clear"> </div>
+				</ul>
+				<ul class="right-form">
+					<h3>发送进度：</h3>
+					<div>
+                    <h5 id = p1></h5>
+					</div>
+					<div class="clear"> </div>
+				</ul>
+				<div class="clear"> </div>
+			</form>
+		</div>
+
+</body>
+</html>

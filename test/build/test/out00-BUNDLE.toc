@@ -1,0 +1,1 @@
+([('test', '/Users/liu/PycharmProjects/test/dist/test', 'EXECUTABLE')],)
